@@ -19,7 +19,7 @@ func successResponse(status int, data interface{}) (*events.APIGatewayProxyRespo
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
 		StatusCode: status,
-		Body:       string(createResponseBody(true, status, data)),
+		Body:       createResponseBody(true, status, data),
 	}
 
 	return &resp, nil
@@ -29,13 +29,13 @@ func errorResponse(status int, data interface{}) (*events.APIGatewayProxyRespons
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
 		StatusCode: status,
-		Body:       string(createResponseBody(false, status, data)),
+		Body:       createResponseBody(false, status, data),
 	}
 
 	return &resp, nil
 }
 
-func createResponseBody(ok bool, status int, data interface{}) []byte {
+func createResponseBody(ok bool, status int, data interface{}) string {
 	dataInString, _ := json.Marshal(data)
 	rb := ResponseBody{
 		Timestamp: time.Now().Format(time.RFC1123Z),
@@ -46,5 +46,5 @@ func createResponseBody(ok bool, status int, data interface{}) []byte {
 	}
 
 	rbInString, _ := json.Marshal(rb)
-	return rbInString
+	return string(rbInString)
 }
