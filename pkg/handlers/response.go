@@ -7,6 +7,9 @@ import (
 	"time"
 )
 
+/*
+	ResponseBody is a custom representation for the APIGatewayProxyResponse body.
+*/
 type ResponseBody struct {
 	Timestamp string `json:"timestamp"`
 	Ok        bool   `json:"ok"`
@@ -15,6 +18,10 @@ type ResponseBody struct {
 	Data      string `json:"data"`
 }
 
+/*
+	SuccessResponse creates a custom success response body (ok = true) for the APIGatewayProxyResponse based on the
+	given status code and message.
+*/
 func SuccessResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
@@ -25,6 +32,10 @@ func SuccessResponse(status int, data interface{}) (*events.APIGatewayProxyRespo
 	return &resp, nil
 }
 
+/*
+	ErrorResponse creates a custom success response body (ok = false) for the APIGatewayProxyResponse based on the
+	given status code and message.
+*/
 func ErrorResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
@@ -35,6 +46,9 @@ func ErrorResponse(status int, data interface{}) (*events.APIGatewayProxyRespons
 	return &resp, nil
 }
 
+/*
+	CreateResponseBody creates a custom response body based on the given status code and message.
+*/
 func CreateResponseBody(ok bool, status int, data interface{}) string {
 	dataInString, _ := json.Marshal(data)
 	rb := ResponseBody{
