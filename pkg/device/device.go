@@ -8,15 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"strings"
 )
 
 var (
-	ErrorFailedToPutDevice       = "Failed to put device"
-	ErrorFailedToFetchDevice     = "failed to fetch device"
-	ErrorFailedToMarshalDevice   = "failed to marshal device"
-	ErrorFailedToUnmarshalDevice = "failed to unmarshal device"
-	ErrorInvalidDeviceData       = "invalid device data"
-	ErrorDeviceAlreadyExists     = "device already exists"
+	ErrorFailedToPutDevice       = "500-Failed to create device!"
+	ErrorFailedToFetchDevice     = "500-Failed to fetch device!"
+	ErrorFailedToMarshalDevice   = "500-Failed to marshal device!"
+	ErrorFailedToUnmarshalDevice = "500-Failed to unmarshal device!"
+	ErrorInvalidDeviceData       = "422-Please provide valid device data!"
+	ErrorDeviceAlreadyExists     = "409-Device with given id is already exists!"
+	ErrorDeviceNotFound          = "404-Device with given id is not found!"
 )
 
 type Device struct {
@@ -33,6 +35,12 @@ func CreateDevice(req events.APIGatewayProxyRequest, table string, dynaClient dy
 	var d Device
 	if err := json.Unmarshal([]byte(req.Body), &d); err != nil {
 		return nil, errors.New(ErrorInvalidDeviceData)
+	}
+
+	// if some fields are missing, report it as an error
+	errorMessage, errorFlag := validateFields(d)
+	if errorFlag == true {
+		return nil, errors.New(errorMessage)
 	}
 
 	// Check if device already exists
@@ -81,5 +89,42 @@ func FetchDevice(deviceId string, table string, dynaClient dynamodbiface.DynamoD
 		return nil, errors.New(ErrorFailedToUnmarshalDevice)
 	}
 
+	_, errorFlag := validateFields(*item)
+	if errorFlag == true {
+		return nil, errors.New(ErrorDeviceNotFound)
+	}
+
 	return item, nil
+}
+
+func validateFields(d Device) (string, bool) {
+	errorMessage := "422-Following fields are not provided: "
+	var errorFlag bool = false
+
+	if len(d.ID) == 0 {
+		errorMessage += "id, "
+		errorFlag = true
+	}
+
+	if len(d.Model) == 0 {
+		errorMessage += "deviceModel, "
+		errorFlag = true
+	}
+
+	if len(d.Name) == 0 {
+		errorMessage += "name, "
+		errorFlag = true
+	}
+
+	if len(d.Note) == 0 {
+		errorMessage += "note, "
+		errorFlag = true
+	}
+
+	if len(d.Serial) == 0 {
+		errorMessage += "serial, "
+		errorFlag = true
+	}
+
+	return strings.TrimSuffix(errorMessage, ", "), errorFlag
 }
