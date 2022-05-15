@@ -22,7 +22,7 @@ var (
 type Device struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`
-	Model  string `json:"model"`
+	Model  string `json:"deviceModel"`
 	Serial string `json:"serial"`
 	Note   string `json:"note"`
 }
