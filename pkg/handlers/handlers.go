@@ -14,10 +14,10 @@ func AddDevice(req events.APIGatewayProxyRequest, table string, dynaClient dynam
 	*events.APIGatewayProxyResponse, error) {
 	result, err := device.CreateDevice(req, table, dynaClient)
 	if err != nil {
-		return catchException(err)
+		return CatchException(err)
 	}
 
-	return successResponse(http.StatusCreated, result)
+	return SuccessResponse(http.StatusCreated, result)
 }
 
 func GetDevice(req events.APIGatewayProxyRequest, table string, dynaClient dynamodbiface.DynamoDBAPI) (
@@ -26,22 +26,22 @@ func GetDevice(req events.APIGatewayProxyRequest, table string, dynaClient dynam
 
 	result, err := device.FetchDevice(deviceId, table, dynaClient)
 	if err != nil {
-		return catchException(err)
+		return CatchException(err)
 	}
 
-	return successResponse(http.StatusOK, result)
+	return SuccessResponse(http.StatusOK, result)
 }
 
 func UnhandledMethod() (*events.APIGatewayProxyResponse, error) {
-	return errorResponse(http.StatusMethodNotAllowed, "Method Not Allowed")
+	return ErrorResponse(http.StatusMethodNotAllowed, "Method Not Allowed")
 }
 
-func catchException(err error) (*events.APIGatewayProxyResponse, error) {
+func CatchException(err error) (*events.APIGatewayProxyResponse, error) {
 	arr := strings.Split(err.Error(), "-")
 	if len(arr) == 2 {
 		statusCode, _ := strconv.Atoi(arr[0])
-		return errorResponse(statusCode, aws.String(arr[1]))
+		return ErrorResponse(statusCode, aws.String(arr[1]))
 	} else {
-		return errorResponse(http.StatusInternalServerError, aws.String(err.Error()))
+		return ErrorResponse(http.StatusInternalServerError, aws.String(err.Error()))
 	}
 }

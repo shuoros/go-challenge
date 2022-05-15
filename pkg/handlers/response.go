@@ -15,27 +15,27 @@ type ResponseBody struct {
 	Data      string `json:"data"`
 }
 
-func successResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
+func SuccessResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
 		StatusCode: status,
-		Body:       string(createResponseBody(true, status, data)),
+		Body:       CreateResponseBody(true, status, data),
 	}
 
 	return &resp, nil
 }
 
-func errorResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
+func ErrorResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
 		StatusCode: status,
-		Body:       string(createResponseBody(false, status, data)),
+		Body:       CreateResponseBody(false, status, data),
 	}
 
 	return &resp, nil
 }
 
-func createResponseBody(ok bool, status int, data interface{}) []byte {
+func CreateResponseBody(ok bool, status int, data interface{}) string {
 	dataInString, _ := json.Marshal(data)
 	rb := ResponseBody{
 		Timestamp: time.Now().Format(time.RFC1123Z),
@@ -46,5 +46,5 @@ func createResponseBody(ok bool, status int, data interface{}) []byte {
 	}
 
 	rbInString, _ := json.Marshal(rb)
-	return rbInString
+	return string(rbInString)
 }

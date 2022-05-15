@@ -38,7 +38,7 @@ func CreateDevice(req events.APIGatewayProxyRequest, table string, dynaClient dy
 	}
 
 	// if some fields are missing, report it as an error
-	errorMessage, errorFlag := validateFields(d)
+	errorMessage, errorFlag := ValidateFields(d)
 	if errorFlag == true {
 		return nil, errors.New(errorMessage)
 	}
@@ -89,7 +89,7 @@ func FetchDevice(deviceId string, table string, dynaClient dynamodbiface.DynamoD
 		return nil, errors.New(ErrorFailedToUnmarshalDevice)
 	}
 
-	_, errorFlag := validateFields(*item)
+	_, errorFlag := ValidateFields(*item)
 	if errorFlag == true {
 		return nil, errors.New(ErrorDeviceNotFound)
 	}
@@ -97,7 +97,7 @@ func FetchDevice(deviceId string, table string, dynaClient dynamodbiface.DynamoD
 	return item, nil
 }
 
-func validateFields(d Device) (string, bool) {
+func ValidateFields(d Device) (string, bool) {
 	errorMessage := "422-Following fields are not provided: "
 	var errorFlag bool = false
 
