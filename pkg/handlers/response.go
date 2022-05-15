@@ -15,7 +15,7 @@ type ResponseBody struct {
 	Data      string `json:"data"`
 }
 
-func successResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
+func SuccessResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
 		StatusCode: status,
@@ -25,7 +25,7 @@ func successResponse(status int, data interface{}) (*events.APIGatewayProxyRespo
 	return &resp, nil
 }
 
-func errorResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
+func ErrorResponse(status int, data interface{}) (*events.APIGatewayProxyResponse, error) {
 	resp := events.APIGatewayProxyResponse{
 		Headers:    map[string]string{"Content-Type": "application/json"},
 		StatusCode: status,
