@@ -15,6 +15,9 @@ const tableName = "VeryImportantTable"
 
 var dynaClient dynamodbiface.DynamoDBAPI
 
+/*
+	This is the entry point for the lambda function.
+*/
 func main() {
 	region := os.Getenv("AWS_REGION")
 
@@ -28,6 +31,11 @@ func main() {
 	lambda.Start(handler)
 }
 
+/*
+	This function handles the incoming request based on its http method and then calls the appropriate handler.
+	If the given request's http type is GET, it will call the Get handler and if it is POST, it will call the
+	Post handler otherwise it will call the default handler which is the UnhandledMethod handler.
+*/
 func handler(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	switch req.HTTPMethod {
 	case "GET":

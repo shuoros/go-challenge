@@ -29,6 +29,9 @@ type Device struct {
 	Note   string `json:"note"`
 }
 
+/*
+	CreateDevice validate the request body and create a new device in the database.
+*/
 func CreateDevice(req events.APIGatewayProxyRequest, table string, dynaClient dynamodbiface.DynamoDBAPI) (
 	*Device, error) {
 	// Validate request
@@ -66,6 +69,9 @@ func CreateDevice(req events.APIGatewayProxyRequest, table string, dynaClient dy
 	return &d, nil
 }
 
+/*
+	FetchDevice fetch a device from the database.
+*/
 func FetchDevice(deviceId string, table string, dynaClient dynamodbiface.DynamoDBAPI) (*Device, error) {
 	// query the device
 	input := &dynamodb.GetItemInput{
@@ -97,6 +103,10 @@ func FetchDevice(deviceId string, table string, dynaClient dynamodbiface.DynamoD
 	return item, nil
 }
 
+/*
+	ValidateFields validates a device object and if one of its filed was not existed it returns a message including
+	missing fields and a false boolean, otherwise it returns true.
+*/
 func ValidateFields(d Device) (string, bool) {
 	errorMessage := "422-Following fields are not provided: "
 	var errorFlag bool = false
