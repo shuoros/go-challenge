@@ -20,7 +20,7 @@ func AddDevice(req events.APIGatewayProxyRequest, table string, dynaClient dynam
 
 func GetDevice(req events.APIGatewayProxyRequest, table string, dynaClient dynamodbiface.DynamoDBAPI) (
 	*events.APIGatewayProxyResponse, error) {
-	deviceId := req.QueryStringParameters["id"]
+	deviceId := req.PathParameters["id"]
 
 	result, err := device.FetchDevice(deviceId, table, dynaClient)
 	if err != nil {
