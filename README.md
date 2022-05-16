@@ -54,7 +54,7 @@ Expected Response:
   "ok": true,
   "status": 201,
   "message": "Created",
-  "data": "{\"id\":\"id3\",\"name\":\"Sensor\",\"deviceModel\":\"/devicemodels/id1\",\"serial\":\"A020000102\",\"note\":\"Testing a sensor.\"}"
+  "data": "{\"id\":\"id1\",\"name\":\"Sensor\",\"deviceModel\":\"model1\",\"serial\":\"A020000102\",\"note\":\"Testing a sensor.\"}"
 }
 ```
 
@@ -71,7 +71,7 @@ Expected Response:
   "ok": true,
   "status": 200,
   "message": "OK",
-  "data": "{\"id\":\"id1\",\"name\":\"Sensor\",\"deviceModel\":\"/devicemodels/id1\",\"serial\":\"A020000102\",\"note\":\"Testing a sensor.\"}"
+  "data": "{\"id\":\"id1\",\"name\":\"Sensor\",\"deviceModel\":\"model1\",\"serial\":\"A020000102\",\"note\":\"Testing a sensor.\"}"
 }
 ```
 
