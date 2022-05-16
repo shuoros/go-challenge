@@ -32,7 +32,7 @@
 - again from the Actions to create Resource, give it a name and fill `{id}` as the resource path and click on create Resource
 - click on {id} path and from actions to create Method, select `GET`, then select `Lambda Function` as Integration type, make sure `Use Lambda Proxy Integration` and `Use Default Timeout` are checked, and choose your lambda function from the dropdown
 - click on save
-- finally, for deploying the api, from Actions click on `Deploy API`, select New Stage, fill in the name `dev` and select `api` as the stage name, then click on deploy
+- finally, for deploying the api, from Actions click on `Deploy API`, select New Stage, fill in `api` as the stage name, then click on deploy
 - go to stages tab and get your api url
 
 ### addDevice
